@@ -1,13 +1,8 @@
-
-
-
-import { ImageBackground } from 'react-native';
-
-
-
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import {
   FlatList,
+  ImageBackground,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -22,8 +17,8 @@ const dataServicios = {
       id: '1',
       nombre: 'Corte',
       precio: '₡7000',
-      duracion: ' 30 min Aproximadamente ',
-      detalles: ' Incluye asesoría de imagen según tu estilo y tipo de rostro. ',
+      duracion: '30 min Aproximadamente',
+      detalles: 'Incluye asesoría de imagen según tu estilo y tipo de rostro.',
     },
     {
       id: '2',
@@ -36,17 +31,17 @@ const dataServicios = {
   'Servicio VIP': [
     {
       id: '1',
-      nombre: ' Corte ',
+      nombre: 'Corte',
       precio: '₡10,000',
       duracion: '45 min Aproximadamente',
-      detalles: 'Incluye Asesoría de corte según tu estilo de rostro, Servicio VIP,',
+      detalles: 'Incluye Asesoría de corte según tu estilo de rostro, Servicio VIP.',
     },
     {
       id: '2',
-      nombre: ' Corte y Barba ',
+      nombre: 'Corte y Barba',
       precio: '₡15,000',
-      duracion: ' 60 min Aproximadamente ',
-      detalles: 'Perfil de cejas, Lavado y Secado, Bebida, Vapor con Exfoliación y Mascarilla negra- Masaje ',
+      duracion: '60 min Aproximadamente',
+      detalles: 'Perfil de cejas, Lavado y Secado, Bebida, Vapor con Exfoliación y Mascarilla negra- Masaje',
     },
   ],
   'Corte de Niños': [
@@ -54,7 +49,7 @@ const dataServicios = {
       id: '1',
       nombre: 'Corte de niños',
       precio: '₡6000',
-      duracion: '25 min Aproximadamente ',
+      duracion: '25 min Aproximadamente',
       detalles: 'Servicio de calidad reflejado en un gran corte para los chiquitines',
     },
   ],
@@ -62,6 +57,7 @@ const dataServicios = {
 
 export default function Servicios() {
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(null);
+  const router = useRouter();
 
   const renderBotonesCategorias = () => (
     <View style={styles.categoriaContainer}>
@@ -104,6 +100,18 @@ export default function Servicios() {
             {item.detalles ? (
               <Text style={styles.detalles}>{item.detalles}</Text>
             ) : null}
+
+            <TouchableOpacity
+              style={styles.botonAgendar}
+              onPress={() =>
+                router.push({
+                  pathname: '/agendar',
+                  params: { servicio: item.nombre },
+                })
+              }
+            >
+              <Text style={styles.textoBoton}>Agendar</Text>
+            </TouchableOpacity>
           </View>
         )}
       />
@@ -112,52 +120,51 @@ export default function Servicios() {
 
   return (
     <ImageBackground
-  source={{ uri: 'https://i.imgur.com/85kBXia.png' }}
-  style={styles.fondo}
-  resizeMode="cover"
->
-  <View style={styles.contenido}>
-    <Text style={styles.title}>Nuestros Servicios</Text>
-    {renderServicios()}
-  </View>
+      source={{ uri: 'https://i.imgur.com/85kBXia.png' }}
+      style={styles.fondo}
+      resizeMode="cover"
+    >
+      <View style={styles.contenido}>
+        <Text style={styles.title}>Nuestros Servicios</Text>
+        {renderServicios()}
+      </View>
 
-  {/* Botones al fondo */}
-  <View style={styles.barraInferior}>
-    {renderBotonesCategorias()}
-  </View>
-</ImageBackground>
-
-
-
+      <View style={styles.barraInferior}>{renderBotonesCategorias()}</View>
+    </ImageBackground>
   );
-  
 }
 
 const styles = StyleSheet.create({
-  container: {
+  fondo: {
     flex: 1,
-    padding: 20,
-    backgroundColor: '#fff',
+    width: '100%',
+    height: '100%',
   },
-  
+  contenido: {
+    padding: 20,
+  },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 15,
     textAlign: 'center',
+    color: '#000',
   },
   categoriaContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginBottom: 20,
     flexWrap: 'wrap',
   },
   categoriaBoton: {
-    paddingVertical: 10,
-    paddingHorizontal: 15,
     backgroundColor: '#ddd',
-    borderRadius: 8,
-    marginVertical: 5,
+    paddingVertical: 20,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal: 5,
+    width: 100,
+    height: 100,
   },
   categoriaBotonActivo: {
     backgroundColor: '#000',
@@ -165,6 +172,7 @@ const styles = StyleSheet.create({
   categoriaTexto: {
     fontWeight: 'bold',
     color: '#333',
+    textAlign: 'center',
   },
   categoriaTextoActivo: {
     color: '#fff',
@@ -194,16 +202,17 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
     color: '#444',
   },
-
-  fondo: {
-    flex: 1,
-    width: '100%',
-    height: '100%',
+  botonAgendar: {
+    marginTop: 10,
+    backgroundColor: '#000',
+    paddingVertical: 10,
+    borderRadius: 8,
+    alignItems: 'center',
   },
-  overlay: {
-    flex: 1,
-    backgroundColor: '', // Opacidad ajustable para mejorar legibilidad
-    padding: 20,
+  textoBoton: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 16,
   },
   barraInferior: {
     position: 'absolute',
@@ -214,39 +223,5 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     paddingVertical: 15,
-    backgroundColor: '',
   },
-  
-  
-  categoriaContainer: {
-    flexDirection: 'row',
-  },
-  
-  categoriaBoton: {
-    backgroundColor: '#ddd',
-    paddingVertical: 20,
-    paddingHorizontal: 20,
-    borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginHorizontal: 5,
-    width: 100, // fijamos tamaño para cuadrado
-    height: 100,
-  },
-  
-  categoriaBotonActivo: {
-    backgroundColor: '#000',
-  },
-  
-  categoriaTexto: {
-    fontWeight: 'bold',
-    color: '#333',
-    textAlign: 'center',
-  },
-  
-  categoriaTextoActivo: {
-    color: '#fff',
-  },
-  
 });
-
