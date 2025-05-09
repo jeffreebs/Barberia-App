@@ -37,7 +37,7 @@ face: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#a69e6a',
+    backgroundColor: '#000',
     borderRadius: 10,
     padding: 10,
     elevation: 5,
@@ -46,7 +46,7 @@ back: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#7c7772',
+    backgroundColor: '#f0f0f0',
     borderRadius: 10,
     padding: 10,
 },
@@ -64,11 +64,11 @@ especialidad: {
     fontSize: 16,
     fontStyle: 'italic',
     marginBottom: 5,
-    color: '#fff',
+    color: '#000',
 },
 experiencia: {
     fontSize: 14,
-    color: '#ccc',
+    color: '#000',
 },
 });
 

@@ -1,4 +1,5 @@
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { Picker } from '@react-native-picker/picker';
 import { useState } from 'react';
 import {
   Alert,
@@ -14,6 +15,7 @@ import {
 } from 'react-native';
 
 export default function AgendarCita() {
+  const [barbero, setBarbero] = useState('');
   const [nombre, setNombre] = useState('');
   const [email, setEmail] = useState('');
   const [telefono, setTelefono] = useState('+506');
@@ -31,6 +33,11 @@ export default function AgendarCita() {
   const agendar = () => {
     if (!nombre || !fecha || !hora || !email || !telefono) {
       Alert.alert('Por favor completa todos los campos');
+      return;
+    }
+
+    if (!barbero) {
+      Alert.alert('Por favor selecciona un barbero');
       return;
     }
 
@@ -53,13 +60,14 @@ export default function AgendarCita() {
 
     Alert.alert(
       'Cita agendada',
-      `Nombre: ${nombre}\nFecha: ${fecha.toLocaleDateString()}\nHora: ${hora}`
+      `Nombre: ${nombre}\nBarbero: ${barbero}\nCorreo: ${email}\nTeléfono: ${telefono}\nFecha: ${fecha.toLocaleDateString()}\nHora: ${hora}`
     );
 
     setNombre('');
     setEmail('');
     setTelefono('+506');
     setHora('');
+    setBarbero('');
   };
 
   return (
@@ -74,7 +82,7 @@ export default function AgendarCita() {
           <Text style={styles.label}>Nombre completo</Text>
           <TextInput
             style={styles.input}
-            placeholder="Ingresa acá tu nombre completo "
+            placeholder="Ingresa acá tu nombre completo"
             placeholderTextColor="#555"
             value={nombre}
             onChangeText={setNombre}
@@ -99,6 +107,22 @@ export default function AgendarCita() {
             onChangeText={setTelefono}
             keyboardType="phone-pad"
           />
+
+          <Text style={styles.label}>Selecciona tu barbero</Text>
+          <View style={styles.pickerContainer}>
+            <Picker
+              selectedValue={barbero}
+              onValueChange={(itemValue) => setBarbero(itemValue)}
+              style={styles.picker}
+              dropdownIconColor="#000"
+              itemStyle={{ color: '#000' }}
+            >
+              <Picker.Item label="Selecciona un barbero" value="" />
+              <Picker.Item label="Juan" value="Juan" />
+              <Picker.Item label="Omar" value="Omar" />
+              <Picker.Item label="Brayan" value="Brayan" />
+            </Picker>
+          </View>
 
           <Text style={styles.label}>Fecha</Text>
           <TouchableOpacity onPress={() => setMostrarFecha(true)} style={styles.input}>
@@ -161,7 +185,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#000',
     padding: 20,
-    justifyContent: 'center',
+    // justifyContent: 'center', // Eliminado para evitar conflictos con Picker
   },
   title: {
     fontSize: 26,
@@ -208,7 +232,22 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   buttonText: {
-    color: '#fFF',
+    color: '#FFF',
     fontSize: 16,
   },
+  pickerContainer: {
+  borderWidth: 1,
+  borderColor: '#ccc',
+  borderRadius: 8,
+  backgroundColor: '#fff',
+  marginBottom: 15,
+  overflow: 'hidden',
+},
+picker: {
+  height: 50,
+  width: '100%',
+  color: '#000',
+  backgroundColor: '#fff', // ✅ forzamos fondo blanco al desplegar
+},
+
 });
