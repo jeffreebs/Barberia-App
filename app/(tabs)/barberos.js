@@ -1,6 +1,5 @@
 import { useRouter } from 'expo-router';
-import React from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import FlipCardBarbero from '../../components/FlipCardBarbero';
 
 const barberos = [
@@ -25,6 +24,7 @@ const barberos = [
     imagen: 'https://i.imgur.com/t7itNK1.jpeg',
     experiencia: '5 años',
 },
+  // Podés agregar más barberos aquí
 ];
 
 export default function Barberos() {
@@ -34,11 +34,10 @@ return (
     <View style={styles.container}>
     <Text style={styles.title}>Elige tu barbero</Text>
 
-    <FlatList
-        data={barberos}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
+    <ScrollView contentContainerStyle={styles.list}>
+        {barberos.map((item) => (
         <FlipCardBarbero
+            key={item.id}
             barbero={item}
             onPress={() =>
             router.push({
@@ -47,9 +46,8 @@ return (
             })
             }
         />
-        )}
-        contentContainerStyle={styles.list}
-    />
+        ))}
+    </ScrollView>
     </View>
 );
 }
@@ -58,7 +56,7 @@ const styles = StyleSheet.create({
 container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: '#c6c99c',
 },
 title: {
     fontSize: 24,
@@ -68,6 +66,7 @@ title: {
 },
 list: {
     alignItems: 'center',
-    gap: 12,
+    paddingBottom: 30,
+    gap: 16,
 },
 });

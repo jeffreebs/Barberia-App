@@ -1,5 +1,5 @@
 import { useRouter } from 'expo-router';
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import {
   Dimensions,
   FlatList,
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   button: {
-    backgroundColor: '#000', // o cualquier color que querás usar
+    backgroundColor: '#7c7772', // o cualquier color que querás usar
     paddingVertical: 15,
     paddingHorizontal: 30,
     borderRadius: 10,
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     width: '80%',
   },
   buttonText: {
-    color: '#fff',
+    color: '#000',
     fontWeight: 'bold',
     fontSize: 16,
     textAlign: 'center',

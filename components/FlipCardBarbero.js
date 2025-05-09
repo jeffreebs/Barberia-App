@@ -1,85 +1,75 @@
-import React, { useRef, useState } from 'react';
-import { Animated, Image, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
+import FlipCard from 'react-native-flip-card';
 
-export default function FlipCardBarbero({ barbero }) {
-const rotate = useRef(new Animated.Value(0)).current;
-const [flipped, setFlipped] = useState(false);
+const FlipCardBarbero = ({ barbero }) => {
+return (
+    
+    <View style={styles.cardContainer}> 
+    <FlipCard
+        flipHorizontal
+        flipVertical={false}
+        clickable={true}
+    >
+        {/* Cara frontal */}
+        <View style={styles.face}>
+        <Image source={{ uri: barbero.imagen }} style={styles.image} />
+        <Text style={styles.nombre}>{barbero.nombre}</Text>
+        </View>
 
-const frontInterpolate = rotate.interpolate({
-    inputRange: [0, 180],
-    outputRange: ['0deg', '180deg'],
-});
-
-const backInterpolate = rotate.interpolate({
-    inputRange: [0, 180],
-    outputRange: ['180deg', '360deg'],
-});
-
-const flipCard = () => {
-    if (flipped) {
-    Animated.spring(rotate, {
-        toValue: 0,
-        useNativeDriver: true,
-    }).start();
-    } else {
-    Animated.spring(rotate, {
-        toValue: 180,
-        useNativeDriver: true,
-    }).start();
-    }
-    setFlipped(!flipped);
+        {/* Cara trasera */}
+        <View style={styles.back}>
+        <Text style={styles.especialidad}>{barbero.especialidad}</Text>
+        <Text style={styles.experiencia}>{barbero.experiencia} de experiencia</Text>
+        </View>
+    </FlipCard>
+    </View>
+);
 };
 
-return (
-    <TouchableWithoutFeedback onPress={flipCard}>
-    <View style={styles.container}>
-        <Animated.View style={[styles.card, { transform: [{ rotateY: frontInterpolate }] }]}>
-        <Image source={{ uri: barbero.imagen }} style={styles.image} />
-        <Text style={styles.name}>{barbero.nombre}</Text>
-        </Animated.View>
-        <Animated.View style={[styles.card, styles.cardBack, { transform: [{ rotateY: backInterpolate }] }]}>
-        <Text style={styles.info}>Experiencia: {barbero.experiencia}</Text>
-        <Text style={styles.info}>Especialidad: {barbero.especialidad}</Text>
-        </Animated.View>
-    </View>
-    </TouchableWithoutFeedback>
-);
-}
-
 const styles = StyleSheet.create({
-container: {
-    width: 200,
-    height: 250,
-    margin: 10,
+cardContainer: {
+    width: '90%',
+    height: 260,
+    marginVertical: 12,
+    alignSelf: 'center',
 },
-card: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    backgroundColor: '#fff',
-    backfaceVisibility: 'hidden',
+face: {
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 12,
-    elevation: 4,
+    backgroundColor: '#a69e6a',
+    borderRadius: 10,
+    padding: 10,
+    elevation: 5,
 },
-cardBack: {
-    backgroundColor: '#0b4f6c',
-    transform: [{ rotateY: '180deg' }],
+back: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#7c7772',
+    borderRadius: 10,
+    padding: 10,
 },
 image: {
     width: 100,
     height: 100,
     borderRadius: 50,
+    marginBottom: 10,
 },
-name: {
-    marginTop: 10,
-    fontWeight: 'bold',
+nombre: {
     fontSize: 18,
+    fontWeight: 'bold',
 },
-info: {
-    color: 'white',
+especialidad: {
     fontSize: 16,
-    marginBottom: 8,
+    fontStyle: 'italic',
+    marginBottom: 5,
+    color: '#fff',
+},
+experiencia: {
+    fontSize: 14,
+    color: '#ccc',
 },
 });
+
+export default FlipCardBarbero;

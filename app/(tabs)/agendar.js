@@ -1,16 +1,22 @@
 import DateTimePicker from '@react-native-community/datetimepicker';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   Alert,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   View
 } from 'react-native';
 
 export default function AgendarCita() {
   const [nombre, setNombre] = useState('');
+  const [email, setEmail] = useState('');
+  const [telefono, setTelefono] = useState('+506');
   const [fecha, setFecha] = useState(new Date());
   const [mostrarFecha, setMostrarFecha] = useState(false);
   const [hora, setHora] = useState('');
@@ -23,8 +29,25 @@ export default function AgendarCita() {
   ];
 
   const agendar = () => {
-    if (!nombre || !fecha || !hora) {
+    if (!nombre || !fecha || !hora || !email || !telefono) {
       Alert.alert('Por favor completa todos los campos');
+      return;
+    }
+
+    const [horaStr, meridiano] = hora.split(' ');
+    let [horaNum, minutos] = horaStr.split(':').map(Number);
+    if (meridiano === 'PM' && horaNum !== 12) horaNum += 12;
+    if (meridiano === 'AM' && horaNum === 12) horaNum = 0;
+
+    const fechaSeleccionada = new Date(fecha);
+    fechaSeleccionada.setHours(horaNum);
+    fechaSeleccionada.setMinutes(minutos);
+    fechaSeleccionada.setSeconds(0);
+
+    const ahora = new Date();
+
+    if (fechaSeleccionada <= ahora) {
+      Alert.alert('Selecciona una fecha y hora futura');
       return;
     }
 
@@ -34,74 +57,102 @@ export default function AgendarCita() {
     );
 
     setNombre('');
+    setEmail('');
+    setTelefono('+506');
     setHora('');
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Agendar Cita</Text>
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.container}>
+          <Text style={styles.title}>Agendar Cita</Text>
 
-      <Text style={styles.label}>Nombre completo</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Ej. Jeff"
-        placeholderTextColor="#555"
-        value={nombre}
-        onChangeText={setNombre}
-      />
+          <Text style={styles.label}>Nombre completo</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Ingresa acá tu nombre completo "
+            placeholderTextColor="#555"
+            value={nombre}
+            onChangeText={setNombre}
+          />
 
-      <Text style={styles.label}>Fecha</Text>
-      <TouchableOpacity onPress={() => setMostrarFecha(true)} style={styles.input}>
-        <Text style={{ color: '#000' }}>{fecha.toLocaleDateString()}</Text>
-      </TouchableOpacity>
+          <Text style={styles.label}>Correo electrónico</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Ej. ejemplo@gmail.com"
+            placeholderTextColor="#555"
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+          />
 
-      {mostrarFecha && (
-        <DateTimePicker
-        value={fecha}
-        mode="date"
-        minimumDate={new Date()}
-        display="spinner"
-        onChange={(event, selectedDate) => {
-          setMostrarFecha(false);
-          if (selectedDate) {
-            setFecha(selectedDate);
-          }
-        }}
-      />
-      
-      )}
+          <Text style={styles.label}>Teléfono celular</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Ej. +50671234567"
+            placeholderTextColor="#555"
+            value={telefono}
+            onChangeText={setTelefono}
+            keyboardType="phone-pad"
+          />
 
-      <Text style={styles.label}>Hora</Text>
-      <TouchableOpacity onPress={() => setMostrarHora(true)} style={styles.input}>
-        <Text style={{ color: '#000' }}>
-          {hora || 'Seleccione una hora'}
-        </Text>
-      </TouchableOpacity>
+          <Text style={styles.label}>Fecha</Text>
+          <TouchableOpacity onPress={() => setMostrarFecha(true)} style={styles.input}>
+            <Text style={{ color: '#000' }}>{fecha.toLocaleDateString()}</Text>
+          </TouchableOpacity>
 
-      {mostrarHora && (
-        <View style={styles.opciones}>
-          {horariosDisponibles.map((h, index) => (
-            <TouchableOpacity
-              key={index}
-              onPress={() => {
-                setHora(h);
-                setMostrarHora(false);
+          {mostrarFecha && (
+            <DateTimePicker
+              value={fecha}
+              mode="date"
+              minimumDate={new Date()}
+              display="spinner"
+              onChange={(event, selectedDate) => {
+                setMostrarFecha(false);
+                if (event.type === 'set' && selectedDate) {
+                  setFecha(selectedDate);
+                }
               }}
-              style={[
-                styles.opcionItem,
-                hora === h && { backgroundColor: '#ccc' }, // Aplica estilo cuando está seleccionado
-              ]}
-            >
-              <Text style={styles.opcionText}>{h}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>    
-      )}
+            />
+          )}
 
-      <TouchableOpacity style={styles.button} onPress={agendar}>
-        <Text style={styles.buttonText}>Confirmar Cita</Text>
-      </TouchableOpacity>
-    </View>
+          <Text style={styles.label}>Hora</Text>
+          <TouchableOpacity onPress={() => setMostrarHora(true)} style={styles.input}>
+            <Text style={{ color: '#000' }}>
+              {hora || 'Seleccione una hora'}
+            </Text>
+          </TouchableOpacity>
+
+          {mostrarHora && (
+            <View style={styles.opciones}>
+              {horariosDisponibles.map((h, index) => (
+                <TouchableOpacity
+                  key={index}
+                  onPress={() => {
+                    setHora(h);
+                    setMostrarHora(false);
+                  }}
+                  style={[
+                    styles.opcionItem,
+                    hora === h && { backgroundColor: '#ccc' },
+                  ]}
+                >
+                  <Text style={styles.opcionText}>{h}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          )}
+
+          <TouchableOpacity style={styles.button} onPress={agendar}>
+            <Text style={styles.buttonText}>Confirmar Cita</Text>
+          </TouchableOpacity>
+        </View>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -134,7 +185,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     color: '#000',
   },
-  opciones: { //CAMBIAR COLOR A OPCIONES DE HORARIO
+  opciones: {
     backgroundColor: '#FFF',
     borderRadius: 10,
     padding: 10,
