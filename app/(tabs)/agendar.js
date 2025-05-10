@@ -1,5 +1,7 @@
+
+
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { Picker } from '@react-native-picker/picker';
+import { useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import {
   Alert,
@@ -15,7 +17,10 @@ import {
 } from 'react-native';
 
 export default function AgendarCita() {
-  const [barbero, setBarbero] = useState('');
+  const [mostrarBarberos, setMostrarBarberos] = useState(false);
+
+  const { barbero: barberoParam } = useLocalSearchParams();
+  const [barbero, setBarbero] = useState(barberoParam || '');
   const [nombre, setNombre] = useState('');
   const [email, setEmail] = useState('');
   const [telefono, setTelefono] = useState('+506');
@@ -23,6 +28,26 @@ export default function AgendarCita() {
   const [mostrarFecha, setMostrarFecha] = useState(false);
   const [hora, setHora] = useState('');
   const [mostrarHora, setMostrarHora] = useState(false);
+
+  const barberosDisponibles = [
+  { id: '1', nombre: 'Juan' },
+  { id: '2', nombre: 'Omar' },
+  { id: '3', nombre: 'Brayan' }
+];
+
+  const [servicio, setServicio] = useState('');
+const [mostrarServicios, setMostrarServicios] = useState(false);
+
+const serviciosDisponibles = [
+  { id: '1', nombre: 'Corte', precio: '₡7,000' },
+  { id: '2', nombre: 'Corte y Barba', precio: '₡10,000' },
+  { id: '3', nombre: 'Corte VIP', precio: '₡10,000' },
+  { id: '4', nombre: 'Corte y Barba VIP', precio: '₡12,000' },
+  { id: '5', nombre: 'Corte de Niños', precio: '₡6,000' }
+];
+
+
+
 
   const horariosDisponibles = [
     '08:00 AM', '09:00 AM', '10:00 AM', '11:00 AM', '12:00 PM',
@@ -40,6 +65,12 @@ export default function AgendarCita() {
       Alert.alert('Por favor selecciona un barbero');
       return;
     }
+
+    if (!servicio) {
+  Alert.alert('Por favor selecciona un servicio');
+  return;
+}
+
 
     const [horaStr, meridiano] = hora.split(' ');
     let [horaNum, minutos] = horaStr.split(':').map(Number);
@@ -60,7 +91,7 @@ export default function AgendarCita() {
 
     Alert.alert(
       'Cita agendada',
-      `Nombre: ${nombre}\nBarbero: ${barbero}\nCorreo: ${email}\nTeléfono: ${telefono}\nFecha: ${fecha.toLocaleDateString()}\nHora: ${hora}`
+      `Nombre: ${nombre}\nBarbero: ${barbero}\nFecha: ${fecha.toLocaleDateString()}\nHora: ${hora}\nServicio: ${servicio}`
     );
 
     setNombre('');
@@ -108,21 +139,65 @@ export default function AgendarCita() {
             keyboardType="phone-pad"
           />
 
+          
+
           <Text style={styles.label}>Selecciona tu barbero</Text>
-          <View style={styles.pickerContainer}>
-            <Picker
-              selectedValue={barbero}
-              onValueChange={(itemValue) => setBarbero(itemValue)}
-              style={styles.picker}
-              dropdownIconColor="#000"
-              itemStyle={{ color: '#000' }}
-            >
-              <Picker.Item label="Selecciona un barbero" value="" />
-              <Picker.Item label="Juan" value="Juan" />
-              <Picker.Item label="Omar" value="Omar" />
-              <Picker.Item label="Brayan" value="Brayan" />
-            </Picker>
-          </View>
+<TouchableOpacity onPress={() => setMostrarBarberos(!mostrarBarberos)} style={styles.input}>
+  <Text style={{ color: '#000' }}>
+    {barbero ? barbero : 'Toca para seleccionar'}
+  </Text>
+</TouchableOpacity>
+
+{mostrarBarberos && (
+  <View style={styles.opciones}>
+    {barberosDisponibles.map((b) => (
+      <TouchableOpacity
+        key={b.id}
+        onPress={() => {
+          setBarbero(b.nombre);
+          setMostrarBarberos(false);
+        }}
+        style={[
+          styles.opcionItem,
+          barbero === b.nombre && { backgroundColor: '#ccc' },
+        ]}
+      >
+        <Text style={styles.opcionText}>{b.nombre}</Text>
+      </TouchableOpacity>
+    ))}
+  </View>
+)}
+
+
+          <Text style={styles.label}>Selecciona tu servicio</Text>
+<TouchableOpacity onPress={() => setMostrarServicios(!mostrarServicios)} style={styles.input}>
+  <Text style={{ color: '#000' }}>
+    {servicio ? servicio : 'Toca para seleccionar'}
+  </Text>
+</TouchableOpacity>
+
+{mostrarServicios && (
+  <View style={styles.opciones}>
+    {serviciosDisponibles.map((s) => (
+      <TouchableOpacity
+        key={s.id}
+        onPress={() => {
+          setServicio(`${s.nombre} - ${s.precio}`);
+          setMostrarServicios(false);
+        }}
+        style={[
+          styles.opcionItem,
+          servicio === `${s.nombre} - ${s.precio}` && { backgroundColor: '#ccc' },
+        ]}
+      >
+        <Text style={styles.opcionText}>{s.nombre} - {s.precio}</Text>
+      </TouchableOpacity>
+    ))}
+  </View>
+)}
+
+
+
 
           <Text style={styles.label}>Fecha</Text>
           <TouchableOpacity onPress={() => setMostrarFecha(true)} style={styles.input}>
@@ -185,7 +260,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#000',
     padding: 20,
-    // justifyContent: 'center', // Eliminado para evitar conflictos con Picker
   },
   title: {
     fontSize: 26,
@@ -235,19 +309,16 @@ const styles = StyleSheet.create({
     color: '#FFF',
     fontSize: 16,
   },
+
   pickerContainer: {
   borderWidth: 1,
   borderColor: '#ccc',
   borderRadius: 8,
-  backgroundColor: '#fff',
+  backgroundColor: '#fff', // <- FONDO BLANCO
   marginBottom: 15,
   overflow: 'hidden',
 },
-picker: {
-  height: 50,
-  width: '100%',
-  color: '#000',
-  backgroundColor: '#fff', // ✅ forzamos fondo blanco al desplegar
-},
 
+
+  
 });

@@ -1,3 +1,5 @@
+
+
 import { useRouter } from 'expo-router';
 import { useEffect, useRef } from 'react';
 import {
@@ -65,12 +67,19 @@ export default function HomeScreen() {
           <Text style={styles.buttonText}>Barberos</Text>
         </TouchableOpacity>
 
+        <TouchableOpacity style={styles.button} onPress={() => router.push('/(tabs)/galeria-cortes')}>
+          <Text style={styles.buttonText}>Galería de Cortes</Text>
+        </TouchableOpacity>
+
+
+
+
         <TouchableOpacity style={styles.button} onPress={() => router.push('/contacto')}>
           <Text style={styles.buttonText}>Contacto</Text>
         </TouchableOpacity>
       </View>
-    </View>
-  );
+  </View>
+);
 }
 
 
