@@ -12,7 +12,7 @@ export default function GaleriaCortesScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000',
+    backgroundColor: '#0455',
     paddingTop: 50,
     paddingHorizontal: 20,
   },

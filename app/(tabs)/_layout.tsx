@@ -35,16 +35,8 @@ export default function TabLayout() {
       ),
     }}
   />
-  <Tabs.Screen
-    name="explore"
-    options={{
-      title: 'Explore',
-      tabBarIcon: ({ color }) => (
-        <IconSymbol size={28} name="paperplane.fill" color={color} />
-      ),
-    }}
-  />
-  <Tabs.Screen
+
+  {/* <Tabs.Screen
     name="productos"
     options={{
       title: 'Productos',
@@ -52,14 +44,48 @@ export default function TabLayout() {
         <IconSymbol size={28} name="cart.fill" color={color} />
       ),
     }}
-  />
-  <Tabs.Screen
+  /> */}
+  {/* <Tabs.Screen
   name="galeria-cortes"
   options={{
     title: 'Galería',
     tabBarIcon: ({ color }) => (
       <IconSymbol size={28} name="photo.fill" color={color} />
     ),
+  }}
+/> */}
+<Tabs.Screen
+  name="agendar"
+  options={{
+    title: 'Agendar',
+    tabBarIcon: ({ color }) => (
+      <IconSymbol size={28} name="scissors" color={color} />
+    ),
+  }}
+/>
+
+<Tabs.Screen
+  name="barberos"
+  options={{
+    href: null, // 👈 esto la oculta del tab bar
+  }}
+/>
+<Tabs.Screen
+  name="servicios"
+  options={{
+    href: null,
+  }}
+/>
+<Tabs.Screen
+  name="explore"
+  options={{
+    href: null,
+  }}
+/>
+<Tabs.Screen
+  name="contacto"
+  options={{
+    href: null,
   }}
 />
 
