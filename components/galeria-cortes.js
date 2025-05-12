@@ -16,8 +16,8 @@ export default function GaleriaCortes() {
 return (
     <View style={styles.container}>
     <Carousel
-        width={250}
-        height={250}
+        width={400}
+        height={400}
         data={cortes}
         renderItem={({ item }) => (
         <View style={styles.card}>
@@ -32,7 +32,14 @@ return (
 }
 
 const styles = StyleSheet.create({
-container: { marginTop: 20 },
-card: { borderRadius: 12, overflow: 'hidden' },
-image: { width: 250, height: 250, borderRadius: 12 },
+container: { marginTop: 90 },
+card: { 
+    borderRadius: 12, 
+    overflow: 'hidden' },
+
+
+image: { 
+    width: 400, 
+    height: 400, 
+    borderRadius: 12 },
 });
