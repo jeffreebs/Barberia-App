@@ -1,11 +1,10 @@
-
-
 import { useRouter } from 'expo-router';
 import { useEffect, useRef } from 'react';
 import {
   Dimensions,
   FlatList,
   Image,
+  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
@@ -52,36 +51,60 @@ export default function HomeScreen() {
 
       <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
 
-      <View style={styles.overlay}>
-        <Text style={styles.title}>Bienvenido a VIP Cuts</Text>
+      <ScrollView contentContainerStyle={styles.scrollContent}>
 
-        <TouchableOpacity style={styles.button} onPress={() => router.push('/agendar')}>
-          <Text style={styles.buttonText}>Agendar Cita</Text>
-        </TouchableOpacity>
+        {/* Sección superior: título + login/registro */}
+        <View style={styles.overlay}>
+          <View style={styles.heroContent}>
+            <Text style={styles.title}>Bienvenido a VIP Cuts</Text>
 
-        <TouchableOpacity style={styles.button} onPress={() => router.push('/servicios')}>
-          <Text style={styles.buttonText}>Servicios</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.button} onPress={() => router.push('/barberos')}>
-          <Text style={styles.buttonText}>Barberos</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.button} onPress={() => router.push('/(tabs)/galeria-cortes')}>
-          <Text style={styles.buttonText}>Galería de Cortes</Text>
-        </TouchableOpacity>
-
-
-
-
-        <TouchableOpacity style={styles.button} onPress={() => router.push('/contacto')}>
-          <Text style={styles.buttonText}>Contacto</Text>
-        </TouchableOpacity>
+          |<View style={styles.authButtons}>
+            <TouchableOpacity style={styles.authButton} onPress={() => router.push('/login')}>
+              <Text style={styles.authText}>Iniciar Sesión</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.authButton} onPress={() => router.push('/registro')}>
+              <Text style={styles.authText}>Registrarse</Text>
+            </TouchableOpacity>
+        </View>
       </View>
-  </View>
-);
-}
+    </View>
 
+
+        {/* Sección inferior: botones de navegación */}
+        <View style={styles.botonesSection}>
+          <TouchableOpacity style={styles.button} onPress={() => router.push('/agendar')}>
+            <Text style={styles.buttonText}>Agendar Cita</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.button} onPress={() => router.push('/servicios')}>
+            <Text style={styles.buttonText}>Servicios</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.button} onPress={() => router.push('/barberos')}>
+            <Text style={styles.buttonText}>Barberos</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.button} onPress={() => router.push('/(tabs)/galeria-cortes')}>
+            <Text style={styles.buttonText}>Galería de Cortes</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.button} onPress={() => router.push('/(tabs)/productos')}>
+            <Text style={styles.buttonText}>Productos</Text>
+          </TouchableOpacity>
+
+
+          <TouchableOpacity style={styles.button} onPress={() => router.push('/contacto')}>
+            <Text style={styles.buttonText}>Contacto</Text>
+          </TouchableOpacity>
+
+          
+          <View style={{ height: 80 }} />
+        </View>
+
+      </ScrollView>
+    </View>
+  );
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -92,22 +115,48 @@ const styles = StyleSheet.create({
     height: height,
     resizeMode: 'cover',
   },
+  scrollContent: {
+    flexGrow: 1,
+    justifyContent: 'flex-start',
+  },
   overlay: {
-    flex: 1,
-    justifyContent: 'center',
+    minHeight: height * 0.8,
+    justifyContent: 'flex-start',
     alignItems: 'center',
-    padding: 20,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // oscuro transparente para mejor lectura
+    paddingTop: 40,
+    paddingHorizontal: 20,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   title: {
     fontSize: 28,
     fontWeight: 'bold',
     color: '#fff',
-    marginBottom: 30,
     textAlign: 'center',
   },
+  authButtons: {
+    flexDirection: 'row',
+    gap: 10,
+    marginTop: 20,
+  },
+  authButton: {
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+  },
+  authText: {
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+  botonesSection: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    paddingTop: 40,
+    paddingBottom: 100,
+    alignItems: 'center',
+    paddingHorizontal: 20,
+  },
   button: {
-    backgroundColor: '#7c7772', // o cualquier color que querás usar
+    backgroundColor: 'rgba(124, 119, 114, 0.6)',
     paddingVertical: 15,
     paddingHorizontal: 30,
     borderRadius: 10,
@@ -120,4 +169,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
   },
+
+  heroContent: {
+  marginTop: 60,
+  alignItems: 'center',
+},
+
 });
