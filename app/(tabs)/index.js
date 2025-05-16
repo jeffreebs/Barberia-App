@@ -53,7 +53,7 @@ export default function HomeScreen() {
 
       <ScrollView contentContainerStyle={styles.scrollContent}>
 
-        {/* Sección superior: título + login/registro */}
+        
         <View style={styles.overlay}>
           <View style={styles.heroContent}>
             <Text style={styles.title}>Bienvenido a VIP Cuts</Text>
@@ -70,7 +70,7 @@ export default function HomeScreen() {
     </View>
 
 
-        {/* Sección inferior: botones de navegación */}
+        
         <View style={styles.botonesSection}>
           <TouchableOpacity style={styles.button} onPress={() => router.push('/agendar')}>
             <Text style={styles.buttonText}>Agendar Cita</Text>
