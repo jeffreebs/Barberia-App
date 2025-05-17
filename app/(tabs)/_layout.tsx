@@ -13,83 +13,80 @@ export default function TabLayout() {
 
   return (
     <Tabs
-  screenOptions={{
-    tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-    headerShown: false,
-    tabBarButton: HapticTab,
-    tabBarBackground: TabBarBackground,
-    tabBarStyle: Platform.select({
-      ios: {
-        position: 'absolute',
-      },
-      default: {},
-    }),
-  }}
->
-  <Tabs.Screen
-    name="index"
-    options={{
-      title: 'Home',
-      tabBarIcon: ({ color }) => (
-        <IconSymbol size={28} name="house.fill" color={color} />
-      ),
-    }}
-  />
+      screenOptions={{
+        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        headerShown: false,
+        tabBarButton: HapticTab,
+        tabBarBackground: TabBarBackground,
+        tabBarStyle: Platform.select({
+          ios: {
+            position: 'absolute',
+          },
+          default: {},
+        }),
+      }}
+    >
+      <Tabs.Screen
+        name="index"
+        options={{
+          title: 'Home',
+          tabBarIcon: ({ color }) => (
+            <IconSymbol size={28} name="house.fill" color={color} />
+          ),
+        }}
+      />
 
-  {/* <Tabs.Screen
-    name="productos"
-    options={{
-      title: 'Productos',
-      tabBarIcon: ({ color }) => (
-        <IconSymbol size={28} name="cart.fill" color={color} />
-      ),
-    }}
-  /> */}
-  {/* <Tabs.Screen
-  name="galeria-cortes"
-  options={{
-    title: 'Galería',
-    tabBarIcon: ({ color }) => (
-      <IconSymbol size={28} name="photo.fill" color={color} />
-    ),
-  }}
-/> */}
-<Tabs.Screen
-  name="agendar"
-  options={{
-    title: 'Agendar',
-    tabBarIcon: ({ color }) => (
-      <IconSymbol size={28} name="scissors" color={color} />
-    ),
-  }}
-/>
+      <Tabs.Screen
+        name="agendar"
+        options={{
+          title: 'Agendar',
+          tabBarIcon: ({ color }) => (
+            <IconSymbol size={28} name="scissors" color={color} />
+          ),
+        }}
+      />
 
-<Tabs.Screen
-  name="barberos"
-  options={{
-    href: null, // 👈 esto la oculta del tab bar
-  }}
-/>
-<Tabs.Screen
-  name="servicios"
-  options={{
-    href: null,
-  }}
-/>
-<Tabs.Screen
-  name="explore"
-  options={{
-    href: null,
-  }}
-/>
-<Tabs.Screen
-  name="contacto"
-  options={{
-    href: null,
-  }}
-/>
+      <Tabs.Screen
+        name="reseñas"
+        options={{
+          title: 'Reseñas',
+          tabBarIcon: ({ color }) => (
+            <IconSymbol size={28} name="bubble.right.fill" color={color} />
+          ),
+        }}
+      />
 
-</Tabs>
+      <Tabs.Screen
+        name="barberos"
+        options={{
+          href: null, // Oculta esta ruta del tab bar
+        }}
+      />
+      <Tabs.Screen
+        name="servicios"
+        options={{
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="explore"
+        options={{
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="cambiar-pass"
+        options={{
+        }}
+    />
 
+      <Tabs.Screen
+        name="contacto"
+        options={{
+          href: null,
+        }}
+      />
+    </Tabs>
+    
   );
 }

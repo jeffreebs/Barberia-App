@@ -58,7 +58,7 @@ export default function HomeScreen() {
           <View style={styles.heroContent}>
             <Text style={styles.title}>Bienvenido a VIP Cuts</Text>
 
-          |<View style={styles.authButtons}>
+          <View style={styles.authButtons}>
             <TouchableOpacity style={styles.authButton} onPress={() => router.push('/login')}>
               <Text style={styles.authText}>Iniciar Sesión</Text>
             </TouchableOpacity>
